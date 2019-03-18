@@ -1,0 +1,88 @@
+
+HADOOP QUERY CODE FOR DATA VALIDATTION IN MY LAST HMS PROJECT.
+
+
+
+
+- Access the HUE platform(https://huetest.hms.hmsy.com/)- QueryEditors -Impala.
+    HADOOP
+select distinct 
+'Hadoop' system,
+hms_line_of_business, 
+case_line_type,
+finding_case_id,
+hms_line_key, 
+hms_netting_current,
+finding_is_excluded,
+servicingprovideridhms,
+provider_federaltin,  
+provider_lastname,
+provider_providertypecode,
+null as provider_siutype,
+billingprovideridhms,
+referringiddetail, 
+patientid,
+member_sex,
+member_dob,
+patientdob,
+patientagehms, 
+lobid, 
+planid,
+member_memberplanid, 
+member_memberplaneffectivedatebegin,
+member_memberplaneffectivedateend,
+claimformhms,
+claimid,
+detaillinehms, 
+transactionid, 
+typeofbill,
+placeofservicedetail,
+admitdate,
+dischargedate,
+fromdatedetail,
+todatedetail,
+revenuepaid,
+servicepaid,
+modifierpaid1,
+modifierpaid2,
+modifierpaid3,
+modifierpaid4,
+unitpaid,
+ndc,
+ndcunit,
+ndcunittype,
+authorizationhms, 
+typeofservicehms,
+icdversion,
+admittingdiagnosis,
+principaldiagnosis,
+diagnosispoa01,
+principalprocedure,
+diagnosisdetail01,
+diagnosisdetail02,
+diagnosisdetail03,
+diagnosisdetail04,
+billedamountdetail,
+billedamounttotalhms, 
+paidamountdetail,
+paiddatedetail, 
+paiddateheader, 
+receiveddatedetail, 
+receiveddateheader, 
+adjustmentcodedetail1, 
+null as adjustmentcodedetail2,
+null as adjustmentcodedetail3,
+finding_comment,
+reg_reg_regulation,
+reg_reg_source,
+rule_effective_date,
+rule_termination_date,
+rule_rule_key
+
+-- includes BADS since 1/1/2017
+FROM audit_validation_findings_gb_latest 
+where (finding_message_code = 'PS5' and case_line_type = 'b')
+and finding_batch_key = (select max(finding_batch_key) from audit_validation_findings_gb_latest)
+and fromdatedetail > 20161231
+order by finding_case_id, case_line_type;
+
